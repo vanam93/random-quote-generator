@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <link rel="stylesheet" href="./index.css">
+    <title>QuotesApp</title>
+    
+</head>
+
+<body>
+    <div class="box">
+       <image  id="image" src="https://1000logos.net/wp-content/uploads/2021/04/Twitter-logo.png" height="30px"  alt="#tweet"/>
+       
+       
+        <p id="quotes"></p>
+    <p id="author"></p>
+   
+    <button id="next">Next quote</button>
+    <div>
+    <script>
+        const quotes=document.getElementById('quotes');
+        const author=document.getElementById('author');
+        const next=document.getElementById('next');
+        const tweet=document.getElementById('image');
+        const api="https://type.fit/api/quotes";
+        let fetchdata="";
+        let quotedata=""
+        const tweetnow=()=>{
+         const tweetid=`https://twitter.com/intent/tweet?text=${quotedata.text}`
+         window.open(tweetid);
+        }
+        const randomQuote=()=>{
+            const num=Math.floor(Math.random()*1000);
+            quotedata=fetchdata[num];
+            quotes.innerHTML=`${fetchdata[num].text}`;
+          (fetchdata[num].author===null) 
+               ? author.innerText=`unKnown`:author.innerText=`By ${fetchdata[num].author}`;
+        }
+        const getQuotes= async() => {
+            try{
+                 const data= await fetch(api);
+                 fetchdata=await data.json();
+                  randomQuote();                              
+            }
+            catch(error){
+             console.log(`error!! ${error}`)
+            }
+          
+        };
+        tweet.addEventListener("mousedown",tweetnow);
+        next.addEventListener("click",randomQuote);
+        getQuotes();
+    </script>
+</body>
+</html>
